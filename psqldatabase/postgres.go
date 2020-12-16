@@ -70,8 +70,9 @@ func DeletefromPwdColTable(id int) {
 }
 
 //
-func DatabaseConnectionTest() {
+func DatabaseConnectionTest() string {
 	postgresConnector, err := sql.Open("postgres", getConnectionString())
+	// pcr := make([]PasswordCollectionRow, 10)
 	if err != nil {
 		panic(err.Error())
 	}
@@ -81,11 +82,21 @@ func DatabaseConnectionTest() {
 	if err != nil {
 		panic(err.Error())
 	}
+	i := 0
+	parsedString := "["
 	for rows.Next() {
+		tempPCR := PasswordCollectionRow{}
 		var id, name, url, username, password string
 		if err = rows.Scan(&id, &name, &url, &username, &password); err != nil {
 			panic(err.Error())
 		}
-		fmt.Println(id, name, url, username, password)
+		tempPCR.SetValues(id, name, url, username, password)
+		if i != 0 {
+			parsedString += ","
+		}
+		parsedString += tempPCR.ToJSON()
+		i++
 	}
+	parsedString += "]"
+	return parsedString
 }

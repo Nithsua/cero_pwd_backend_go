@@ -12,13 +12,15 @@ import (
 
 func indexFunction(w http.ResponseWriter, r *http.Request) {
 	parameters := r.URL.Query()
-	fmt.Println(parameters)
-	fmt.Fprintf(w, "Test, its listen and server from go")
+	if parameters["action"][0] == "select" {
+		fmt.Println("Action: Select")
+
+	}
+	fmt.Fprintf(w, psqldatabase.DatabaseConnectionTest())
 }
 
 func main() {
 	environment.LoadEnvironment()
-	psqldatabase.DatabaseConnectionTest()
 	router := mux.NewRouter().StrictSlash(true)
 	router.HandleFunc("/password_collection", indexFunction)
 	log.Fatal(http.ListenAndServe(":8000", router))
