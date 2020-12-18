@@ -7,7 +7,7 @@ import (
 
 //
 type PasswordCollectionRow struct {
-	ID       string `json:"id"`
+	UUID     string `json:"uuid"`
 	Name     string `json:"name"`
 	URL      string `json:"url"`
 	Username string `json:"username"`
@@ -15,8 +15,8 @@ type PasswordCollectionRow struct {
 }
 
 //
-func (pcr *PasswordCollectionRow) SetValues(id, name, url, username, password string) {
-	pcr.ID, pcr.Name, pcr.URL, pcr.Username, pcr.Password = id, name, url, username, password
+func (pcr *PasswordCollectionRow) SetValues(uuid, name, url, username, password string) {
+	pcr.UUID, pcr.Name, pcr.URL, pcr.Username, pcr.Password = uuid, name, url, username, password
 }
 
 //

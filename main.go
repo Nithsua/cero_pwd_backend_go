@@ -5,7 +5,6 @@ import (
 	"io/ioutil"
 	"log"
 	"net/http"
-	"strconv"
 
 	"github.com/gorilla/mux"
 	"github.com/nitsuan/cero_pwd_backend_go/environment"
@@ -18,8 +17,8 @@ func indexFunction(w http.ResponseWriter, r *http.Request) {
 		fmt.Println("Action: Select")
 	} else if parameters["action"][0] == "delete" {
 		fmt.Println("Action: Delete")
-		id, _ := strconv.ParseInt(parameters["id"][0], 10, 32)
-		psqldatabase.DeletefromPwdColTable(int(id))
+		uuid := parameters["uuid"][0]
+		psqldatabase.DeletefromPwdColTable(uuid)
 	} else if parameters["action"][0] == "modify" {
 		fmt.Println("Action: Modify")
 		body, err := ioutil.ReadAll(r.Body)
@@ -29,9 +28,17 @@ func indexFunction(w http.ResponseWriter, r *http.Request) {
 		}
 		tempPCR := psqldatabase.PasswordCollectionRow{}
 		tempPCR.FromJSON(body)
-		psqldatabase.ModifyDataPwdColTable(tempPCR.Name, tempPCR.URL, tempPCR.Username, tempPCR.Password, tempPCR.ID)
+		psqldatabase.ModifyDataPwdColTable(tempPCR.Name, tempPCR.URL, tempPCR.Username, tempPCR.Password, tempPCR.UUID)
 	} else if parameters["action"][0] == "create" {
 		fmt.Println("Action: Create")
+		body, err := ioutil.ReadAll(r.Body)
+		defer r.Body.Close()
+		if err != nil {
+			panic(err.Error())
+		}
+		tempPCR := psqldatabase.PasswordCollectionRow{}
+		tempPCR.FromJSON(body)
+		psqldatabase.InsertIntoPwdColTable(tempPCR.Name, tempPCR.URL, tempPCR.Username, tempPCR.Password)
 	}
 	fmt.Fprintf(w, psqldatabase.SelectfromPwdColTable())
 }
