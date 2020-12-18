@@ -9,6 +9,7 @@ import (
 	"github.com/google/uuid"
 	"github.com/joho/godotenv"
 	_ "github.com/lib/pq" //needed for postgres connector
+	"github.com/nitsuan/cero_pwd_backend_go/data"
 )
 
 var host, user, password, dbname string
@@ -90,7 +91,7 @@ func SelectfromPwdColTable() string {
 	i := 0
 	parsedString := "["
 	for rows.Next() {
-		tempPCR := PasswordCollectionRow{}
+		tempPCR := data.PasswordCollectionRow{}
 		var uuid, name, url, username, password string
 		if err = rows.Scan(&uuid, &name, &url, &username, &password); err != nil {
 			panic(err.Error())

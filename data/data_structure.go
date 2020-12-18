@@ -1,4 +1,4 @@
-package psqldatabase
+package data
 
 import (
 	"encoding/json"

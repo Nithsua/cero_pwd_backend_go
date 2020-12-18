@@ -7,6 +7,7 @@ import (
 	"net/http"
 
 	"github.com/gorilla/mux"
+	"github.com/nitsuan/cero_pwd_backend_go/data"
 	"github.com/nitsuan/cero_pwd_backend_go/environment"
 	"github.com/nitsuan/cero_pwd_backend_go/psqldatabase"
 )
@@ -26,7 +27,7 @@ func indexFunction(w http.ResponseWriter, r *http.Request) {
 		if err != nil {
 			panic(err.Error())
 		}
-		tempPCR := psqldatabase.PasswordCollectionRow{}
+		tempPCR := data.PasswordCollectionRow{}
 		tempPCR.FromJSON(body)
 		psqldatabase.ModifyDataPwdColTable(tempPCR.Name, tempPCR.URL, tempPCR.Username, tempPCR.Password, tempPCR.UUID)
 	} else if parameters["action"][0] == "create" {
@@ -36,7 +37,7 @@ func indexFunction(w http.ResponseWriter, r *http.Request) {
 		if err != nil {
 			panic(err.Error())
 		}
-		tempPCR := psqldatabase.PasswordCollectionRow{}
+		tempPCR := data.PasswordCollectionRow{}
 		tempPCR.FromJSON(body)
 		psqldatabase.InsertIntoPwdColTable(tempPCR.Name, tempPCR.URL, tempPCR.Username, tempPCR.Password)
 	}
