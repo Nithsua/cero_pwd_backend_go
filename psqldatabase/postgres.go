@@ -70,7 +70,7 @@ func DeletefromPwdColTable(id int) {
 }
 
 //
-func DatabaseConnectionTest() string {
+func SelectfromPwdColTable() string {
 	postgresConnector, err := sql.Open("postgres", getConnectionString())
 	// pcr := make([]PasswordCollectionRow, 10)
 	if err != nil {
