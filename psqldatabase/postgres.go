@@ -42,13 +42,14 @@ func InsertIntoPwdColTable(name string, url string, username string, password st
 }
 
 //
-func ModifyDataPwdColTable(name string, url string, username string, password string, id int) {
+func ModifyDataPwdColTable(name, url, username, password, id string) {
 	postgresConnector, err := sql.Open("postgres", getConnectionString())
 	if err != nil {
 		panic(err.Error())
 	}
 	defer postgresConnector.Close()
-	commandString := fmt.Sprintf("UPDATE table password_collection SET name='%s', url='%s', username='%s', password='%s WHERE uid='%d'", name, url, username, password, id)
+	intID, _ := strconv.ParseInt(id, 10, 64)
+	commandString := fmt.Sprintf("UPDATE password_collection SET name='%s', url='%s', username='%s', password='%s' WHERE uid=%d", name, url, username, password, intID)
 	_, err = postgresConnector.Exec(commandString)
 	if err != nil {
 		panic(err.Error())

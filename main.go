@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"io/ioutil"
 	"log"
 	"net/http"
 	"strconv"
@@ -21,7 +22,14 @@ func indexFunction(w http.ResponseWriter, r *http.Request) {
 		psqldatabase.DeletefromPwdColTable(int(id))
 	} else if parameters["action"][0] == "modify" {
 		fmt.Println("Action: Modify")
-
+		body, err := ioutil.ReadAll(r.Body)
+		defer r.Body.Close()
+		if err != nil {
+			panic(err.Error())
+		}
+		tempPCR := psqldatabase.PasswordCollectionRow{}
+		tempPCR.FromJSON(body)
+		psqldatabase.ModifyDataPwdColTable(tempPCR.Name, tempPCR.URL, tempPCR.Username, tempPCR.Password, tempPCR.ID)
 	} else if parameters["action"][0] == "create" {
 		fmt.Println("Action: Create")
 	}

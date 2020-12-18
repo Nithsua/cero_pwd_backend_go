@@ -30,6 +30,6 @@ func (pcr PasswordCollectionRow) ToJSON() string {
 }
 
 //
-func (pcr *PasswordCollectionRow) FromJSON(jsonString string) {
-	json.Unmarshal([]byte(jsonString), pcr)
+func (pcr *PasswordCollectionRow) FromJSON(jsonData []byte) {
+	json.Unmarshal(jsonData, pcr)
 }
